@@ -6,25 +6,68 @@
             function merge(array){
                 var nodes = array;
 
-                for(var row = 0; row < nodes.length ; row++){//以行为单位,从上到下
-                    for(var column = nodes[0].length-1; column >= 0 ; column--){//以列为单位，从右往左
+                // for(var row = 0; row < nodes.length ; row++){//以行为单位,从上到下
+                //     for(var column = nodes[0].length-1; column >= 0 ; column--){//以列为单位，从右往左
+                //         console.log("row:" + row + ", column:" + column);
+
+                //         if(nodes[row][column] != undefined && nodes[row][column] != 0){
+                        
+                //             var temp = nodes[row][column];
+                        
+                //             for(var index = ( column - 1 ); index >=0 ; index-- ){
+                //                 if(nodes[row][index] == undefined || nodes[row][index] == 0){//是空节点的话就跳过
+                //                     continue;
+                //                 }
+                            
+                //                 if( nodes[row][index] == temp ){ //当两个节点的值相等时，把下面的值合并上去，并清除下面的值
+                //                     nodes[row][index] = parseInt( nodes[row][index] ) * 2;
+                                
+                //                     nodes[row][column] = undefined;
+
+                //                     column = index;//遍历下一个元素（合并后的下一个元素）
+                //                 }
+
+                //                 break;
+                //             }
+                //         }
+                //     }
+
+                //     var index_zero = nodes[0].length-1;
+
+                //     for(var index_check = 0; index_check < nodes[0].length-1; index_check++){//将空位向最右移动
+
+                //         if(nodes[row][index_check] == 0 || nodes[row][index_check]==undefined){
+                //             for(var index_check_exchange = index_check; index_check_exchange < index_zero; index_check_exchange++){
+                //                 var temp = nodes[row][index_check_exchange];
+
+                //                 nodes[row][index_check_exchange] = nodes[row][index_check_exchange+1];
+                //                 nodes[row][index_check_exchange+1] = temp;
+                //             }
+
+                //             index_zero--;
+                //         }
+                //     }
+                // }
+
+                for(var column = 0; column < nodes[0].length ; column++){//以列为单位,从左往右
+                    for(var row = nodes.length-1; row >= 0 ; row--){//以行为单位，从下往上
                         console.log("row:" + row + ", column:" + column);
 
                         if(nodes[row][column] != undefined && nodes[row][column] != 0){
                         
                             var temp = nodes[row][column];
                         
-                            for(var index = ( column - 1 ); index >=0 ; index-- ){
-                                if(nodes[row][index] == undefined || nodes[row][index] == 0){//是空节点的话就跳过
+                            for(var index = (row-1); index >= 0; index-- ){
+                                if(nodes[index][column] == undefined || nodes[index][column] == 0){//是空节点的话就跳过
                                     continue;
                                 }
                             
-                                if( nodes[row][index] == temp ){ //当两个节点的值相等时，把下面的值合并上去，并清除下面的值
-                                    nodes[row][index] = parseInt( nodes[row][index] ) * 2;
+                                if( nodes[index][column] == temp ){ //当两个节点的值相等时，把下面的值合并上去，并清除下面的值
+                                    nodes[index][column] = parseInt( nodes[index][column] ) * 2;
                                 
                                     nodes[row][column] = undefined;
 
-                                    column = index;//遍历下一个元素（合并后的下一个元素）
+                                    row = index;//遍历下一个元素（合并后的下一个元素）
                                 }
 
                                 break;
@@ -32,23 +75,25 @@
                         }
                     }
 
-                    for(var index_check = 0; index_check < nodes[0].length; index_check++){
-                        if(nodes[row][index_check] == 0){
-                             
-                        }
-                    }
+                    /*将空格从上到下移动*/
 
-                    for(var index_check = nodes[0].length-1; index_check > 0; index_check--){//从右往左，将节点向左移动
-                        var present = nodes[row][index_check];
-                        var next = nodes[row][index_check-1];
+                    var index_check = 0;//开始的位置
+                    var index_nonzero = nodes.length-1;//已经存放空位的位置
+
+                    while(index_check <= index_nonzero){
+                        if(nodes[index_check][column] == 0 || nodes[index_check][column] == undefined){
+                            for(var i = index_check; i < index_nonzero; i++){
+                                var temp = nodes[i][column];
+                            
+                                nodes[i][column] = nodes[i+1][column];
+                                nodes[i+1][column] = temp;
+                            }
                         
-                        if(present == undefined || present == 0){
-                            continue;
+                            index_nonzero--;
                         }
                     
-                        if( next == undefined || next == 0 ){
-                            nodes[row][index_check-1] = present;
-                            nodes[row][index_check] = undefined;
+                        if(nodes[index_check][column] != 0 && nodes[index_check][column] != undefined){
+                            index_check++;
                         }
                     }
 
@@ -64,7 +109,11 @@
 
 
             $(document).ready(function(){
-                var arrays = [[1,2,3,3],[1,0,0,1],[1,2,3,3],[1,1,2,1]];
+                var arrays = [  [1,2,3,3],
+                                [1,0,0,1],
+                                [1,2,3,3],
+                                [1,1,2,1]
+                             ];
 
                 merge(arrays);
             });

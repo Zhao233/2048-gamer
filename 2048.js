@@ -106,19 +106,27 @@ function getSumScore(keyDownType) {
                     }
                 }
             
-                for(var index_check = nodes.length-1; index_check > 0; index_check--){
-                    var present = nodes[index_check][column];
-                    var next = nodes[index_check-1][column];
-                
-                    if(present == undefined || present == 0){
-                        continue;
-                    }
-                
-                    if( next == undefined || next == 0 ){
-                        nodes[index_check-1][column] = present;
-                        nodes[index_check][column] = undefined;
-                    }
-                }
+                 /*将空格从上到下移动*/
+
+                 var index_check = 0;//开始的位置
+                 var index_nonzero = nodes.length-1;//已经存放空位的位置
+
+                 while(index_check <= index_nonzero){
+                     if(nodes[index_check][column] == 0 || nodes[index_check][column] == undefined){
+                         for(var i = index_check; i < index_nonzero; i++){
+                             var temp = nodes[i][column];
+                         
+                             nodes[i][column] = nodes[i+1][column];
+                             nodes[i+1][column] = temp;
+                         }
+                     
+                         index_nonzero--;
+                     }
+                 
+                     if(nodes[index_check][column] != 0 && nodes[index_check][column] != undefined){
+                         index_check++;
+                     }
+                 }
             }
 
             break;
@@ -149,71 +157,48 @@ function getSumScore(keyDownType) {
                     }
                 }
 
-                for(var index_check = 0; index_check < nodes.length-1; index_check++){
-                    var present = nodes[index_check][column];
-                    var next = nodes[index_check+1][column];
-
-                    if(present == undefined || present == 0){
-                        continue;
-                    }
-                
-                    if( next == undefined || next == 0 ){
-                        nodes[index_check+1][column] = present;
-                        nodes[index_check][column] = undefined;
-                    }
-                }
+               
 
             }
 
             break;
         case "left" : 
-            for(var column = 0; column < nodes[0].length ; column++){//以列为单位,向上移动
-            for(var row = nodes.length-1; row >= 0 ; row--){
-                console.log("row:" + row + ", column:" + column);
-
-                if(nodes[row][column] != undefined || nodes[row][column] == 0){
+            for(var row = 0; row < nodes.length ; row++){//以行为单位,从上到下
+                for(var column = nodes[0].length-1; column >= 0 ; column--){//以列为单位，从右往左
+                    console.log("row:" + row + ", column:" + column);
                 
-                    var temp = nodes[row][column];
-                
-                    for(var index = (row-1); index >= 0; index-- ){
-                        if(nodes[index][column] == undefined || nodes[index][column] == 0){//是空节点的话就跳过
-                            continue;
-                        }
+                    if(nodes[row][column] != undefined && nodes[row][column] != 0){
                     
-                        if( nodes[index][column] == temp ){ //当两个节点的值相等时，把下面的值合并上去，并清除下面的值
-                            nodes[index][column] = parseInt( nodes[index][column] ) * 2;
+                        var temp = nodes[row][column];
+                    
+                        for(var index = ( column - 1 ); index >=0 ; index-- ){
+                            if(nodes[row][index] == undefined || nodes[row][index] == 0){//是空节点的话就跳过
+                                continue;
+                            }
                         
-                            nodes[row][column] = undefined;
-
-                            row = index;//遍历下一个元素（合并后的下一个元素）
+                            if( nodes[row][index] == temp ){ //当两个节点的值相等时，把下面的值合并上去，并清除下面的值
+                                nodes[row][index] = parseInt( nodes[row][index] ) * 2;
+                            
+                                nodes[row][column] = undefined;
+                            
+                                column = index;//遍历下一个元素（合并后的下一个元素）
+                            }
+                        
+                            break;
                         }
-
-                        break;
                     }
                 }
-            }
-        
-            for(var index_check = nodes.length-1; index_check > 0; index_check--){
-                var present = nodes[index_check][column];
-                var next = nodes[index_check-1][column];
             
-                if(present == undefined || present == 0){
-                    continue;
-                }
+               
             
-                if( next == undefined || next == 0 ){
-                    nodes[index_check-1][column] = present;
-                    nodes[index_check][column] = undefined;
-                }
+                
             }
-        }
-
 
             break;
         case "right" : 
         for(var column = 0; column < nodes[0].length ; column++){//以列为单位,向上移动
             for(var row = nodes.length-1; row >= 0 ; row--){
-                console.log("row:" + row + ", column:" + column);
+                console.log("row:" + row + ", column:" + column);0
 
                 if(nodes[row][column] != undefined){
                 
@@ -237,19 +222,7 @@ function getSumScore(keyDownType) {
                 }
             }
         
-            for(var index_check = nodes.length-1; index_check > 0; index_check--){
-                var present = nodes[index_check][column];
-                var next = nodes[index_check-1][column];
-            
-                if(present == undefined || present == 0){
-                    continue;
-                }
-            
-                if( next == undefined || next == 0 ){
-                    nodes[index_check-1][column] = present;
-                    nodes[index_check][column] = undefined;
-                }
-            }
+        
         }
 
 
