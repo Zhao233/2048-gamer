@@ -49,15 +49,15 @@
                 //     }
                 // }
 
-                for(var column = 0; column < nodes[0].length ; column++){//以列为单位,从左往右
-                    for(var row = nodes.length-1; row >= 0 ; row--){//以行为单位，从下往上
+                for(var column = 0; column < nodes[0].length ; column++){//以列为单位,从左到右
+                    for(var row = 0; row <nodes.length ; row++){//以行为单位，从上到下
                         console.log("row:" + row + ", column:" + column);
 
                         if(nodes[row][column] != undefined && nodes[row][column] != 0){
                         
                             var temp = nodes[row][column];
                         
-                            for(var index = (row-1); index >= 0; index-- ){
+                            for(var index = (row+1); index < nodes.length; index++ ){
                                 if(nodes[index][column] == undefined || nodes[index][column] == 0){//是空节点的话就跳过
                                     continue;
                                 }
@@ -75,30 +75,27 @@
                         }
                     }
 
-                    /*将空格从上到下移动*/
-
-                    var index_check = 0;//开始的位置
-                    var index_nonzero = nodes.length-1;//已经存放空位的位置
-
-                    while(index_check <= index_nonzero){
+                    /*将空格从下到上移动*/
+                    var index_check = nodes.length-1;//开始的位置
+                    var index_nonzero = 0;//已经存放空位的位置
+                        
+                    while(index_check >= index_nonzero){
                         if(nodes[index_check][column] == 0 || nodes[index_check][column] == undefined){
-                            for(var i = index_check; i < index_nonzero; i++){
+                            for(var i = index_check; i > 0 ; i--){
                                 var temp = nodes[i][column];
                             
-                                nodes[i][column] = nodes[i+1][column];
-                                nodes[i+1][column] = temp;
+                                nodes[i][column] = nodes[i-1][column];
+                                nodes[i-1][column] = temp;
                             }
                         
-                            index_nonzero--;
+                            index_nonzero++;
                         }
                     
                         if(nodes[index_check][column] != 0 && nodes[index_check][column] != undefined){
-                            index_check++;
+                            index_check--;
                         }
                     }
-
                 }
-            
             
                 console.log("矩阵： ")
 
@@ -110,8 +107,8 @@
 
             $(document).ready(function(){
                 var arrays = [  [1,2,3,3],
-                                [1,0,0,1],
-                                [1,2,3,3],
+                                [1,2,0,1],
+                                [1,0,3,3],
                                 [1,1,2,1]
                              ];
 

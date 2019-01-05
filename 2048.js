@@ -136,14 +136,14 @@ function getSumScore(keyDownType) {
                     console.log("row:" + row + ", column:" + column);
 
                     if(nodes[row][column] != undefined && nodes[row][column] != 0){
-                    
+                
                         var temp = nodes[row][column];
-                    
+                
                         for(var index = (row+1); index < nodes.length; index++ ){
                             if(nodes[index][column] == undefined || nodes[index][column] == 0){//是空节点的话就跳过
                                 continue;
                             }
-                        
+                    
                             if( nodes[index][column] == temp ){ //当两个节点的值相等时，把下面的值合并上去，并清除下面的值
                                 nodes[index][column] = parseInt( nodes[index][column] ) * 2;
                             
@@ -157,8 +157,26 @@ function getSumScore(keyDownType) {
                     }
                 }
 
-               
+                /*将空格从下到上移动*/
+                var index_check = nodes.length-1;//开始的位置
+                var index_nonzero = 0;//已经存放空位的位置
 
+                while(index_check >= index_nonzero){
+                    if(nodes[index_check][column] == 0 || nodes[index_check][column] == undefined){
+                        for(var i = index_check; i > 0 ; i--){
+                            var temp = nodes[i][column];
+                        
+                            nodes[i][column] = nodes[i-1][column];
+                            nodes[i-1][column] = temp;
+                        }
+                    
+                        index_nonzero++;
+                    }
+                
+                    if(nodes[index_check][column] != 0 && nodes[index_check][column] != undefined){
+                        index_check--;
+                    }
+                }
             }
 
             break;
@@ -186,12 +204,10 @@ function getSumScore(keyDownType) {
                         
                             break;
                         }
+
+
                     }
                 }
-            
-               
-            
-                
             }
 
             break;
