@@ -234,35 +234,56 @@ function getSumScore(keyDownType) {
 
             break;
         case "right" : 
-        for(var column = 0; column < nodes[0].length ; column++){//以列为单位,向上移动
-            for(var row = nodes.length-1; row >= 0 ; row--){
-                console.log("row:" + row + ", column:" + column);0
-
-                if(nodes[row][column] != undefined){
+            for(var row = 0; row < nodes.length ; row++){//以行为单位,从上到下
+                for(var column = 0; column <  nodes[0].length-1 ; column++){//以列为单位，从左往右
+                    console.log("row:" + row + ", column:" + column);
                 
-                    var temp = nodes[row][column];
-                
-                    for(var index = (row-1); index >= 0; index-- ){
-                        if(nodes[index][column] == undefined || nodes[index][column] == 0){//是空节点的话就跳过
-                            continue;
+                    if(nodes[row][column] != undefined && nodes[row][column] != 0){
+                    
+                        var temp = nodes[row][column];
+                    
+                        for(var index = ( column + 1 ); index < nodes[0].length ; index++ ){
+                            if(nodes[row][index] == undefined || nodes[row][index] == 0){//是空节点的话就跳过
+                                continue;
+                            }
+                        
+                            if( nodes[row][index] == temp ){ //当两个节点的值相等时，把下面的值合并上去，并清除下面的值
+                                nodes[row][index] = parseInt( nodes[row][index] ) * 2;
+                            
+                                nodes[row][column] = undefined;
+                            
+                                column = index;//遍历下一个元素（合并后的下一个元素）
+                            }
+                        
+                            break;
                         }
                     
-                        if( nodes[index][column] == temp ){ //当两个节点的值相等时，把下面的值合并上去，并清除下面的值
-                            nodes[index][column] = parseInt( nodes[index][column] ) * 2;
+                    
+                    }
+                }
+            
+                /*将空格从右到左移动*/
+                var index_check = nodes[0].length-1;//开始的位置
+                var index_nonzero = 0;//已经存放空位的位置
+                    
+                while(index_check <= index_nonzero){
+                    if(nodes[row][index_check] == 0 || nodes[row][index_check] == undefined){
+                        for(var i = index_check; i >= 0 ; i--){
+                            var temp = nodes[row][i];
                         
-                            nodes[row][column] = undefined;
-
-                            row = index;//遍历下一个元素（合并后的下一个元素）
+                            nodes[row][i] = nodes[row][i-1];
+                            nodes[row][i-1] = temp;
+                        
                         }
-
-                        break;
+                    
+                        index_nonzero--;
+                    }
+                
+                    if(nodes[row][index_check] != 0 && nodes[row][index_check] != undefined){
+                        index_check++;
                     }
                 }
             }
-        
-        
-        }
-
 
             break;
     }

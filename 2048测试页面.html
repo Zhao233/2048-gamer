@@ -50,14 +50,14 @@
                 // }
 
                 for(var row = 0; row < nodes.length ; row++){//以行为单位,从上到下
-                    for(var column = nodes[0].length-1; column >= 0 ; column--){//以列为单位，从右往左
+                    for(var column = 0; column <  nodes[0].length-1 ; column++){//以列为单位，从左往右
                         console.log("row:" + row + ", column:" + column);
                     
                         if(nodes[row][column] != undefined && nodes[row][column] != 0){
                         
                             var temp = nodes[row][column];
                         
-                            for(var index = ( column - 1 ); index >=0 ; index-- ){
+                            for(var index = ( column + 1 ); index < nodes[0].length ; index++ ){
                                 if(nodes[row][index] == undefined || nodes[row][index] == 0){//是空节点的话就跳过
                                     continue;
                                 }
@@ -77,17 +77,17 @@
                         }
                     }
 
-                    /*将空格从左到右移动*/
-                    var index_check = 0;//开始的位置
-                    var index_nonzero = nodes[0].length-1;//已经存放空位的位置
+                    /*将空格从右到左移动*/
+                    var index_check = nodes[0].length-1;//开始的位置
+                    var index_nonzero = 0;//已经存放空位的位置
                         
                     while(index_check <= index_nonzero){
                         if(nodes[row][index_check] == 0 || nodes[row][index_check] == undefined){
-                            for(var i = index_check; i < nodes[0].length-1 ; i++){
+                            for(var i = index_check; i >= 0 ; i--){
                                 var temp = nodes[row][i];
                             
-                                nodes[row][i] = nodes[row][i+1];
-                                nodes[row][i+1] = temp;
+                                nodes[row][i] = nodes[row][i-1];
+                                nodes[row][i-1] = temp;
                             
                             }
                         
