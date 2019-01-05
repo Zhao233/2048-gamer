@@ -49,54 +49,57 @@
                 //     }
                 // }
 
-                for(var column = 0; column < nodes[0].length ; column++){//以列为单位,从左到右
-                    for(var row = 0; row <nodes.length ; row++){//以行为单位，从上到下
+                for(var row = 0; row < nodes.length ; row++){//以行为单位,从上到下
+                    for(var column = nodes[0].length-1; column >= 0 ; column--){//以列为单位，从右往左
                         console.log("row:" + row + ", column:" + column);
-
+                    
                         if(nodes[row][column] != undefined && nodes[row][column] != 0){
                         
                             var temp = nodes[row][column];
                         
-                            for(var index = (row+1); index < nodes.length; index++ ){
-                                if(nodes[index][column] == undefined || nodes[index][column] == 0){//是空节点的话就跳过
+                            for(var index = ( column - 1 ); index >=0 ; index-- ){
+                                if(nodes[row][index] == undefined || nodes[row][index] == 0){//是空节点的话就跳过
                                     continue;
                                 }
                             
-                                if( nodes[index][column] == temp ){ //当两个节点的值相等时，把下面的值合并上去，并清除下面的值
-                                    nodes[index][column] = parseInt( nodes[index][column] ) * 2;
+                                if( nodes[row][index] == temp ){ //当两个节点的值相等时，把下面的值合并上去，并清除下面的值
+                                    nodes[row][index] = parseInt( nodes[row][index] ) * 2;
                                 
                                     nodes[row][column] = undefined;
-
-                                    row = index;//遍历下一个元素（合并后的下一个元素）
+                                
+                                    column = index;//遍历下一个元素（合并后的下一个元素）
                                 }
-
+                            
                                 break;
                             }
+
+
                         }
                     }
 
-                    /*将空格从下到上移动*/
-                    var index_check = nodes.length-1;//开始的位置
-                    var index_nonzero = 0;//已经存放空位的位置
+                    /*将空格从左到右移动*/
+                    var index_check = 0;//开始的位置
+                    var index_nonzero = nodes[0].length-1;//已经存放空位的位置
                         
-                    while(index_check >= index_nonzero){
-                        if(nodes[index_check][column] == 0 || nodes[index_check][column] == undefined){
-                            for(var i = index_check; i > 0 ; i--){
-                                var temp = nodes[i][column];
+                    while(index_check <= index_nonzero){
+                        if(nodes[row][index_check] == 0 || nodes[row][index_check] == undefined){
+                            for(var i = index_check; i < nodes[0].length-1 ; i++){
+                                var temp = nodes[row][i];
                             
-                                nodes[i][column] = nodes[i-1][column];
-                                nodes[i-1][column] = temp;
+                                nodes[row][i] = nodes[row][i+1];
+                                nodes[row][i+1] = temp;
+                            
                             }
                         
-                            index_nonzero++;
+                            index_nonzero--;
                         }
                     
-                        if(nodes[index_check][column] != 0 && nodes[index_check][column] != undefined){
-                            index_check--;
+                        if(nodes[row][index_check] != 0 && nodes[row][index_check] != undefined){
+                            index_check++;
                         }
                     }
                 }
-            
+
                 console.log("矩阵： ")
 
                 for(var i = 0; i < nodes.length; i++ ){

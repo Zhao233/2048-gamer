@@ -208,6 +208,28 @@ function getSumScore(keyDownType) {
 
                     }
                 }
+
+                /*将空格从左到右移动*/
+                var index_check = 0;//开始的位置
+                var index_nonzero = nodes[0].length-1;//已经存放空位的位置
+                    
+                while(index_check <= index_nonzero){
+                    if(nodes[row][index_check] == 0 || nodes[row][index_check] == undefined){
+                        for(var i = index_check; i < nodes[0].length-1 ; i++){
+                            var temp = nodes[row][i];
+                        
+                            nodes[row][i] = nodes[row][i+1];
+                            nodes[row][i+1] = temp;
+                        
+                        }
+                    
+                        index_nonzero--;
+                    }
+                
+                    if(nodes[row][index_check] != 0 && nodes[row][index_check] != undefined){
+                        index_check++;
+                    }
+                }
             }
 
             break;
