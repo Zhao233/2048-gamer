@@ -266,9 +266,9 @@ function getSumScore(keyDownType) {
                 var index_check = nodes[0].length-1;//开始的位置
                 var index_nonzero = 0;//已经存放空位的位置
                     
-                while(index_check <= index_nonzero){
+                while(index_check >= index_nonzero){
                     if(nodes[row][index_check] == 0 || nodes[row][index_check] == undefined){
-                        for(var i = index_check; i >= 0 ; i--){
+                        for(var i = index_check; i > 0 ; i--){
                             var temp = nodes[row][i];
                         
                             nodes[row][i] = nodes[row][i-1];
@@ -276,14 +276,15 @@ function getSumScore(keyDownType) {
                         
                         }
                     
-                        index_nonzero--;
+                        index_nonzero++;
                     }
                 
                     if(nodes[row][index_check] != 0 && nodes[row][index_check] != undefined){
-                        index_check++;
+                        index_check--;
                     }
                 }
             }
+
 
             break;
     }
